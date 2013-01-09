@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+
+
+<system dim="3" omp_num_threads="1">
+
+  <!--
+  dt : Must be between 0 and 100. This means the percentage of dt of CFL condition limit. The default value is 75%
+  example : dt="70"
+  -->
+  <time start="0" end="0.000000003" dt="75" />
+    
+    
+  <domain>
+    <!--
+    example : lower="0.0" upper="1.5" gridnumber="3" => grid size : 0.5
+    -->
+    <x lower="0.0" upper="0.012" gridnumber="40" />
+    <y lower="0.0" upper="0.012" gridnumber="40" />
+    <z lower="0.0" upper="0.129" gridnumber="430" />
+  </domain>
+  
+  
+  <!-- Not Implemented Yet -->
+  <controller classname="MPITimeController" />
+
+  <field>
+    <solver classname="MPINullFieldSolver" />
+    
+    <!-- Not Implemented Yet -->
+    <epsilon value="(1/36/PI) * 10e-9" />
+    
+    <!-- Not Implemented Yet -->
+    <mu value="4*PI * 10e-7" />
+    
+    <!-- Not Implemented Yet -->
+    <initial_distribution ex="1" ey="2" ez="3" hx="4" hy="5" hz="6" />
+    
+    
+    
+    <!--
+    use : default value is "n". If you want to save visulaization result, use "y" value.
+    timeinterval : time interval saving visualization results. Unit is second. In fact, saving time designated in this flag is approximate value depending on <dt> attribute in <domain> -> <time> node.
+    -->
+    <visualization use="n" timeinterval="0.00000000002" classname="VTKFieldViewer" filename="./output/EMField" precision="6">
+      <domain use="n">
+        <x lower="0.0" upper="0.012" />
+        <y lower="0.0" upper="0.012" />
+        <z lower="0.0" upper="0.129" />
+      </domain>
+    </visualization>
+  </field>
+  
+  <particle>
+    <!--
+    buffer_size : The number of particles which are saved before distribution to other MPI nodes.
+                  This attribute is used only in MPI code because MPI code uses serialized particle generation.
+                  The default value is 256.
+    -->
+    <initial_distribution buffer_size="256">
+      
+      <!-- physical_data of normal_random_bunch must be constant -->
+      <!-- Muon -->
+      <normal_random_bunch use="y" num_particles="10000" group="1">
+        <mu x="0.006" y="0.006" z="0.023"/>
+        <sigma x="0.0005" y="0.0005" z="0.00666666666666666666666666666667"/>
+        <domain>
+          <x lower="0.0" upper="0.012"/>
+          <y lower="0.0" upper="0.012"/>
+          <z lower="0.0" upper="0.044"/>
+        </domain>
+        <!-- node values of physical_data should be constant -->
+        <physical_data>
+          <charge value="-1.602e-11" />
+          <mass value="1.885563e-20" />
+          <velocity u="0.0" v="0.0" w="263817363.04" />
+        </physical_data>
+      </normal_random_bunch>
+      
+      <!-- Lithium positive ion -->
+      <normal_random_bunch use="y" num_particles="10000" group="1">
+        <mu x="0.006" y="0.006" z="0.086"/>
+        <sigma x="0.001" y="0.001" z="0.01333333333333333333333333333333"/>
+        <domain>
+          <x lower="0.0" upper="0.012"/>
+          <y lower="0.0" upper="0.012"/>
+          <z lower="0.045" upper="0.129"/>
+        </domain>
+        <!-- node values of physical_data should be constant -->
+        <physical_data>
+          <charge value="1.602e-11" />
+          <mass value="1.164957688e-18" />
+          <velocity u="0.0" v="0.0" w="0.0" />
+        </physical_data>
+      </normal_random_bunch>
+      
+      <!-- Electron -->
+      <normal_random_bunch use="y" num_particles="10000" group="1">
+        <mu x="0.006" y="0.006" z="0.086"/>
+        <sigma x="0.001" y="0.001" z="0.01333333333333333333333333333333"/>
+        <domain>
+          <x lower="0.0" upper="0.012"/>
+          <y lower="0.0" upper="0.012"/>
+          <z lower="0.045" upper="0.129"/>
+        </domain>
+        <!-- node values of physical_data should be constant -->
+        <physical_data>
+          <charge value="-1.602e-11" />
+          <mass value="9.109e-23" />
+          <velocity u="0.0" v="0.0" w="0.0" />
+        </physical_data>
+      </normal_random_bunch>
+      
+
+    </initial_distribution>
+    
+    
+    <visualization use="y" timeinterval="0.00000000002" classname="VTKParticleViewer" filename="./output/Particles" precision="6"/>
+    <!--
+    <visualization use="y" timeinterval="0.00000002" classname="VTKParticleViewer" filename="./output/Particles" precision="6"/>
+    -->
+    <!--
+    <visualization use="y" timeinterval="0.00000000002" classname="VTKParticleViewer" filename="./output/Particles" precision="6"/>
+    -->
+    
+
+
+  </particle>
+  
+  
+  <!--
+  path : path of a directory to save log files
+  ext : extension of log files
+  min_size : minimum size of log file in kilobyte
+  -->
+  <!-- Not Implemented Yet -->
+  <logger path="../log" ext="txt" min_size="1024" />
+
+
+</system>
+
+
+
+
+
+

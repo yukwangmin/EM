@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+
+
+<system dim="3" omp_num_threads="1">
+
+  <!--
+  dt : Must be between 0 and 100. This means the percentage of dt of CFL condition limit. The default value is 75%
+  example : dt="70"
+  -->
+  <time start="0" end="0.000000003" dt="75" />
+    
+    
+  <domain>
+    <!--
+    example : lower="0.0" upper="1.5" gridnumber="3" => grid size : 0.5
+    -->
+    <x lower="0.0" upper="0.012" gridnumber="40" />
+    <y lower="0.0" upper="0.012" gridnumber="40" />
+    <z lower="0.0" upper="0.144" gridnumber="480" />
+  </domain>
+  
+  
+  <!-- Not Implemented Yet -->
+  <controller classname="TimeController" />
+
+  <field>
+    <solver classname="SerialNullFieldSolver" />
+    
+    <!-- Not Implemented Yet -->
+    <epsilon value="(1/36/PI) * 10e-9" />
+    
+    <!-- Not Implemented Yet -->
+    <mu value="4*PI * 10e-7" />
+    
+    <!-- Not Implemented Yet -->
+    <initial_distribution ex="1" ey="2" ez="3" hx="4" hy="5" hz="6" />
+    
+    
+    
+    <!--
+    use : default value is "n". If you want to save visulaization result, use "y" value.
+    timeinterval : time interval saving visualization results. Unit is second. In fact, saving time designated in this flag is approximate value depending on <dt> attribute in <domain> -> <time> node.
+    -->
+    <visualization use="n" timeinterval="0.00000000002" classname="VTKFieldViewer" filename="./output/EMField" precision="6">
+      <domain use="n">
+        <x lower="0.0" upper="0.012" />
+        <y lower="0.0" upper="0.012" />
+        <z lower="0.0" upper="0.144" />
+      </domain>
+    </visualization>
+  </field>
+  
+  <particle>
+    <!--
+    buffer_size : The number of particles which are saved before distribution to other MPI nodes.
+                  This attribute is used only in MPI code because MPI code uses serialized particle generation.
+                  The default value is 256.
+    -->
+    <initial_distribution buffer_size="256">
+      <direct_setting use="y">
+        <particle x="0.006" y="0.006" z="0.051" u="0.0" v="0.0" w="0.0" charge="-1.602e-8" mass="9.109e-19"/>
+        <particle x="0.006" y="0.006" z="0.091" u="0.0" v="0.0" w="0.0" charge="-1.602e-8" mass="9.109e-19"/>
+      </direct_setting>
+      
+
+    </initial_distribution>
+    
+    
+    <visualization use="y" timeinterval="0.0000000000005" classname="VTKParticleViewer" filename="./output/Particles" precision="6"/>
+    <!--
+    <visualization use="y" timeinterval="0.00000002" classname="VTKParticleViewer" filename="./output/Particles" precision="6"/>
+    -->
+    <!--
+    <visualization use="y" timeinterval="0.00000000002" classname="VTKParticleViewer" filename="./output/Particles" precision="6"/>
+    -->
+    
+
+
+  </particle>
+  
+  
+  <!--
+  path : path of a directory to save log files
+  ext : extension of log files
+  min_size : minimum size of log file in kilobyte
+  -->
+  <!-- Not Implemented Yet -->
+  <logger path="../log" ext="txt" min_size="1024" />
+
+
+</system>
+
+
+
+
+
+

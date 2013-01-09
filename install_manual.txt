@@ -1,0 +1,70 @@
+Author : Kwangmin Yu (yukwangmin@gmail.com)
+
+Xerces : library for xml parsing. (See "http://xerces.apache.org/xerces-c/".)
+mparser : library for math syntax parser (Made by Kwangmin)
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Linux
+////////////////////////////////////////////////////////////////////////////////
+1. Install
+  1) Xerces
+  - Unpack "xerces-c-3.1.1-x86_64-linux-gcc-3.4.tar.gz" if your system is 64bit system or "xerces-c-3.1.1-x86-linux-gcc-3.4.tar.gz" if your system is 32bit system in your proper directory
+
+  2) mparser
+  - Unpack "mparser.tar.gz" in your proper directiry.
+  - Open "Makefile" and check "TARGET" flag to be "GCC".
+  - Execute "make".
+  - Make a symbolic link for "libmparser.so.1.0.1". Use "make link".
+
+
+2. Path setting in "Makefile"
+  1) set "XERCES_ROOT".
+  ex) XERCES_ROOT = ~/lib/xerces-c-3.1.1-x86-linux-gcc-3.4
+  
+  2) set "INCLUDE"
+  ex) INCLUDE = -I ./ -I $(XERCES_ROOT)/include -I /home/ypeter/projects/mparser/
+  
+  3) set "LIBS"
+  ex) LIBS = -L ./ -L $(XERCES_ROOT)/lib -L /home/ypeter/projects/mparser/ -lxerces-c -lmparser
+
+3. Libary Path setting
+  Update LD_LIBRARY_PATH environment variable
+  ex) export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/lib/xerces-c-3.1.1-x86-linux-gcc-3.4/lib:~/projects/mparser/
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// BG/P
+////////////////////////////////////////////////////////////////////////////////
+1. Install
+  1) Xerces
+  - Download source distribution "xerces-c-3.1.1.tar.gz" from "http://xerces.apache.org/xerces-c/download.cgi"  Unpack "xerces-c-3.1.1.tar.gz" in your appropriate directory.
+  - I used this : ./configure CC=mpixlc_r CXX=mpixlcxx_r CFLAGS=-O2 CXXFLAGS=-O2  --prefix=/gpfs/home3/k/kyu/lib/xerces-c-3.1.1/ --host=powerpc-suse-linux --build=powerpc32-unknown-gnu --enable-transcoder-iconv
+    --prefix must use absolute path not relative path
+   Another example : ./configure --disable-shared  --disable-pretty-make --disable-threads CC=mpixlc_r CXX=mpixlcxx_r CFLAGS=-O2 CXXFLAGS=-O2  --prefix=/gpfs/home3/k/kyu/lib/xerces-c-3.1.1/ --host=powerpc-suse-linux --build=powerpc32-unknown-gnu
+  - make
+  - make install
+
+  2) mparser
+  - Unpack "mparser.tar" in your proper directiry.
+  - Open "Makefile" and check "TARGET" flag to be "BG".
+  - Execute "make".
+
+
+2. Path setting in "Makefile"
+  1) set "XERCES_ROOT".
+  ex) XERCES_ROOT = ~/lib/xerces-c-3.1.1
+  
+  2) set "INCLUDE"
+  ex) INCLUDE = -I ./ -I $(XERCES_ROOT)/src -I /home/ypeter/projects/mparser/
+  
+  3) set "LIBS"
+  ex) LIBS = -L ./ -L $(XERCES_ROOT)/src/.libs -L /home/ypeter/projects/mparser/ -lxerces-c -lmparser
+
+3. Libary Path setting
+  Update LIBPATH environment variable
+  ex) export LIBPATH=$LIBPATH:~/lib/xerces-c-3.1.1/src/.libs:~/projects/mparser/
+

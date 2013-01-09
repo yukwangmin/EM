@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+
+
+<system dim="3" omp_num_threads="1">
+
+  <!--
+  dt : Must be between 0 and 100. This means the percentage of dt of CFL condition limit. The default value is 75%
+  example : dt="70"
+  -->
+  <time start="0" end="0.000001" dt="75" />
+    
+    
+  <domain>
+    <!--
+    example : lower="0.0" upper="1.5" gridnumber="3" => grid size : 0.5
+    -->
+    <x lower="0" upper="0.256" gridnumber="32" />
+    <y lower="0" upper="0.256" gridnumber="32" />
+    <!--
+    <z lower="0" upper="16.384" gridnumber="2048" />
+    -->
+    <!--
+    <z lower="0" upper="0.256" gridnumber="32" />
+    -->
+    <z lower="0" upper="1.024" gridnumber="128" />
+  </domain>
+  
+  
+  <!-- Not Implemented Yet -->
+  <controller classname="MPITimeController" />
+
+  <field>
+    <solver classname="MPITestSolverWithParticle1" />
+    
+    <!-- Not Implemented Yet -->
+    <epsilon value="(1/36/PI) * 10e-9" />
+    
+    <!-- Not Implemented Yet -->
+    <mu value="4*PI * 10e-7" />
+    
+    <!-- Not Implemented Yet -->
+    <initial_distribution ex="1" ey="2" ez="3" hx="4" hy="5" hz="6" />
+    
+    
+    
+    <!--
+    use : default value is "n". If you want to save visulaization result, use "y" value.
+    timeinterval : time interval saving visualization results. Unit is second. In fact, saving time designated in this flag is approximate value depending on <dt> attribute in <domain> -> <time> node.
+    -->
+    <visualization use="n" timeinterval="0.000000001" classname="VTKFieldViewer" filename="./output/EMField">
+      <domain use="n">
+        <x lower="0" upper="0.256" />
+        <y lower="0" upper="0.256" />
+        <z lower="0" upper="16.384" />
+      </domain>
+    </visualization>
+  </field>
+  
+  <particle>
+    <!--
+    buffer_size : The number of particles which are saved before distribution to other MPI nodes.
+                  This attribute is used only in MPI code because MPI code uses serialized particle generation.
+                  The default value is 256.
+    -->
+    <initial_distribution buffer_size="256">
+      
+      <direct_setting use="n">
+        <!--
+        <particle x="0.06" y="0.06" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="9.109e-21"/>
+        <particle x="0.06 + 1*0.05" y="0.06" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="9.109e-21"/>
+        <particle x="0.06 + 2*0.05" y="0.06" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="9.109e-21"/>
+        
+        <particle x="0.06" y="0.06 + 1*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="9.109e-21"/>
+        -->
+        <particle x="0.06 + 1*0.05" y="0.06 + 1*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="9.109e-21"/>
+        <!--
+        <particle x="0.06 + 2*0.05" y="0.06 + 1*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="9.109e-21"/>
+        
+        <particle x="0.06" y="0.06 + 2*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="9.109e-21"/>
+        <particle x="0.06 + 1*0.05" y="0.06 + 2*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="9.109e-21"/>
+        <particle x="0.06 + 2*0.05" y="0.06 + 2*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="9.109e-21"/>
+        -->
+        
+        <!--
+        <particle x="0.06" y="0.06" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="0"/>
+        <particle x="0.06 + 1*0.05" y="0.06" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="1"/>
+        <particle x="0.06 + 2*0.05" y="0.06" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="2"/>
+        
+        <particle x="0.06" y="0.06 + 1*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="3"/>
+        <particle x="0.06 + 1*0.05" y="0.06 + 1*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="4"/>
+        <particle x="0.06 + 2*0.05" y="0.06 + 1*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="5"/>
+        
+        <particle x="0.06" y="0.06 + 2*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="6"/>
+        <particle x="0.06 + 1*0.05" y="0.06 + 2*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="7"/>
+        <particle x="0.06 + 2*0.05" y="0.06 + 2*0.05" z="0.06" u="0.0" v="0.0" w="100.0" charge="1.602e-7" mass="8"/>
+        -->
+      </direct_setting>
+      
+      <!-- mode: "rect", "hex"(Default) -->
+      <bunch use="n" mode="hex"  group="1">
+        <domain>
+          <x lower="0" upper="0.256" gridnumber="256" />
+          <y lower="0" upper="0.256" gridnumber="256" />
+          
+          <!-- 
+          Only gridnumber of z is valid. Gridnumbers of x and y are ignored. 
+          First, compute dz by gridnumber. After that, dx = dy = dz.
+          So gridnumber of x or gridnumber of y may be different gridnumber of z.
+          -->
+          <z lower="0" upper="0.256" gridnumber="256" />
+        </domain>
+        <level_function range="less" equality="n">
+          (x-0.128)^2 + (y-0.128)^2 + (z-0.128)^2 - 0.064*0.064
+        </level_function>
+        <physical_data>
+          <charge value="1.602e-7 * exp( -((x-0.128)^2  + (y-0.128)^2 + (z-0.128)^2) )" />
+          <mass value="9.109e-21" />
+          <velocity u="0.0" v="0.0" w="10.0" />
+        </physical_data>
+      </bunch>
+      
+      <!-- physical_data of normal_random_bunch must be constant -->
+      <normal_random_bunch use="y" num_particles="10000" group="1">
+        <mu x="0.128" y="0.128" z="0.128"/>
+        <sigma x="0.005" y="0.005" z="0.005"/>
+        <domain>
+          <x lower="0" upper="0.256"/>
+          <y lower="0" upper="0.256"/>
+          <z lower="0" upper="0.256"/>
+        </domain>
+        <!-- node values of physical_data should be constant -->
+        <physical_data>
+          <charge value="1.602e-7" />
+          <mass value="9.109e-21" />
+          <velocity u="0.0" v="0.0" w="10.0" />
+        </physical_data>
+      </normal_random_bunch>
+      
+      <!-- Not Implemented Yet -->
+      <!-- physical_data of uniform_random_bunch must be constant -->
+      <uniform_random_bunch use="n" num_particles="1000000">
+        <domain>
+          <x lower="0" upper="0.256"/>
+          <y lower="0" upper="0.256"/>
+          <z lower="0" upper="0.256"/>
+        </domain>
+        <level_function range="less" equality="n">
+          (x-0.128)^2 + (y-0.128)^2 + (z-0.128)^2 - 0.064*0.064
+        </level_function>
+        <!-- node values of physical_data should be constant -->
+        <physical_data>
+          <charge value="1.602e-7" />
+          <mass value="9.109e-21" />
+          <velocity u="0.0" v="0.0" w="10.0" />
+        </physical_data>
+      </uniform_random_bunch>
+    
+      <!-- Specify the regions of computational box to be filled with particles. Anything within the <bunch> tag are connected by the logical AND relation -->
+      <user_specific_distribution use="n" mode="hex" classname="TestParticleSetting1" dx="0.004">
+        <physical_data>
+          <charge value="1.602e-7" />
+          <mass value="9.109e-21" />
+          <velocity u="0" v="0" w="0" />
+        </physical_data>
+      </user_specific_distribution>
+
+
+    </initial_distribution>
+    
+    
+    <visualization use="y" timeinterval="0.000000002" classname="VTKParticleViewer" filename="./output/Particles" precision="6"/>
+    <!--
+    <visualization use="y" timeinterval="0.00000002" classname="VTKParticleViewer" filename="./output/Particles" precision="6"/>
+    -->
+    <!--
+    <visualization use="y" timeinterval="0.00000000002" classname="VTKParticleViewer" filename="./output/Particles" precision="6"/>
+    -->
+    
+
+
+  </particle>
+  
+  
+  <!--
+  path : path of a directory to save log files
+  ext : extension of log files
+  min_size : minimum size of log file in kilobyte
+  -->
+  <!-- Not Implemented Yet -->
+  <logger path="../log" ext="txt" min_size="1024" />
+
+
+</system>
+
+
+
+
+
+
